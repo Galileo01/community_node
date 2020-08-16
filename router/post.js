@@ -1,17 +1,22 @@
 //处理 帖子
 const router = require('express').Router();
 const PostModel = require('../model/post');
-
-const { connect } = require('mongoose');
+const UserModel = require('../model/user')
 
 //发布帖子
 router.post('/post/new', async (req, res, next) => {
     const { email } = req.body;
     if (!email) return res.sendStatus(400);
     try {
-        await PostModel.create(req.body);
+        const { avatar } = await UserModel.findOne({ email })
+        const doc = await PostModel.create({
+            ...req.body,
+            avatar
+        });
+        console.log(doc);
         res.send({
             success: 1,
+            data:doc.id
         });
     } catch (err) {
         next(err);
@@ -21,15 +26,23 @@ router.post('/post/new', async (req, res, next) => {
 router.get('/post/get', async (req, res, next) => {
     try {
         console.log(req.query);
-        const { offset, limit } = req.query;
-        let posts = await PostModel.find(req.query)
+        const { offset, limit, email, _id } = req.query;
+        const filter = {};
+        if (email)
+            filter.email = email;
+        if (_id)
+            filter._id = _id;
+        const posts = await PostModel.find(filter)
             .skip(parseInt(offset))
             .limit(parseInt(limit))
             .sort({ see_count: -1, comment_count: -1, created_time: -1 }); //按照 浏览次数，评论条数，创建时间排序
-
+        const total = await PostModel.countDocuments();
         res.send({
             success: 1,
-            data: posts,
+            data: {
+                posts,
+                total
+            },
         });
     } catch (err) {
         next(err);
@@ -42,19 +55,25 @@ router.get('/post/search', async (req, res, next) => {
         console.log(req.query);
         const { email, title, offset, limit } = req.query;
         if (!email && !title) res.sendStatus(400);
+        const posts = [];
+        //匹配email 包含该字符串  的文档
+        if (email) {
+            const docs = await PostModel.find({ email: { $regex: email } });
+            posts.push(...docs);
 
-        const filter = {};
-        if (email) filter.email = { $regex: email };//使用正则，匹配 包含 该字符串的 文档
-        if (title) filter.title = { $regex: title };
-        console.log(filter);
-        const posts = await PostModel.find(filter)
-            .skip(parseInt(offset))
-            .limit(parseInt(limit))
-            .sort({ see_count: -1, comment_count: -1, created_time: -1 }); //按照 浏览次数，评论条数，创建时间排序
-        console.log(posts);
+        }
+        //匹配title 包含该字符串  的文档
+        if (title) {
+            const docs = await PostModel.find({ title: { $regex: title } });
+            posts.push(...docs.filter(doc => !posts.find(item => item.id === doc.id)));//过滤 之前通过eamil 正则匹配存在的 post
+        }
+        const total = posts.length;
         res.send({
             success: 1,
-            data: posts,
+            data: {
+                posts: posts.splice(offset, limit),
+                total
+            },
         });
     } catch (err) {
         next(err);

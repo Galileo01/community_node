@@ -7,7 +7,8 @@ router.post('/comment/add', async (req, res, next) => {
     try {
         const { post_id, email, content } = req.body;
         if (!post_id || !email || !content) return res.sendStatus(400); //参数不够
-        await commentModel.create(req.body);
+        await commentModel.create(req.body); 
+        // 添加评论是同时 更新对应post 的comment_count ：评论个数加1
         const result = await PostModel.updateOne(
             { _id: post_id },
             {

@@ -22,11 +22,15 @@ function verifyToken(token) {
 
 // 验证token 中间件
 function verifyMiddleware(req, res, next) {
-    //登录 和注册请求直接跳过
-    const excludes = ['/user/login', '/user/register', '/post/search'];
+    //登录 和注册请求直接跳过\
+    const excludes = ['/user/login', '/user/register', '/post/search', '/post/get', '/public', '/user/feildcheck'];
     for (const path of excludes) {
         if (req.url.startsWith(path)) return next();
     }
+    // 排除OPTIONS 请求，
+    if (req.method === 'OPTIONS')
+        return next();
+    // console.log(req.url);
     const token = req.headers.authorization;
     if (!token)
         // 请求头没有  authorization 字段

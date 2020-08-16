@@ -45,7 +45,7 @@ router.post('/user/register', async (req, res, next) => {
         console.log(token);
         res.send({
             success: 1,
-            data: { user: req.body, token },
+            data: { userinfo: req.body, token },
         });
     } catch (err) {
         next(err);
@@ -89,7 +89,7 @@ router.post('/user/login', async (req, res, next) => {
         const doc = await UserModel.findOne(
             {
                 email,
-                password: md5(password),
+                password: password,
             },
             {
                 password: false,

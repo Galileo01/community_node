@@ -4,6 +4,10 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    avatar: {
+        type: String,
+        required: true,
+    },
     category: {
         type: Number,
         enum: [0, 1, 2, 3], // 分享，问答，招聘，测试
@@ -11,8 +15,9 @@ const postSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required:true
+        required: true
     },
+    //v2 ：改进过的 content 是md 格式的字符串，返回到前端直接渲染
     content: {
         type: String,
         default: '',
