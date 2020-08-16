@@ -43,7 +43,10 @@ function verifyMiddleware(req, res, next) {
 
 - 完成头像上传功能
  使用multer 中间件 ，获取用户通过表单上传的图片，保存到本地
+<<<<<<< HEAD
 
 - 帖子发布使用 markdown 在线预览
 使用 marked.js 在线编辑md文件，直接预览，  
 是md 格式的字符串 存储到数据库 ，返回到帖子详情页，渲染
+=======
+>>>>>>> 216dc55f635c9f32e3113ae4704eedd49018d6e3
