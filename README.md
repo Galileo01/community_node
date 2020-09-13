@@ -43,9 +43,9 @@ function verifyMiddleware(req, res, next) {
 通过email 和title 可以搜索 帖子，并按照 浏览次数，评论条数，创建时间降序排序
 
 - 完成头像上传功能
- 使用multer 中间件 ，获取用户通过表单上传的图片，保存到本地
-<<<<<<< HEAD
+ 使用[multer](https://github.com/expressjs/multer#readme) 中间件 ，获取用户通过表单上传的图片，保存到本地
+
 
 - 帖子发布使用 markdown 在线预览
-使用 marked.js 在线编辑md文件，直接预览，  
+使用 [marked.js](https://github.com/markedjs/marked)  markdown 转换和编辑器 在线编辑md文件，直接预览，  
 是md 格式的字符串 存储到数据库 ，返回到帖子详情页，渲染
