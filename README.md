@@ -2,7 +2,8 @@
 一个技术交流社区，第一个node项目
 
 ## 开发模式
-**使用Vue + Node 前后端分离**，没有采用视频中的 服务端渲染，个人觉得既然会Vue 还是分离开比较好，后端就只负责 返回数据
+**使用Vue + Node 前后端分离**，没有采用视频中的 服务端渲染，个人觉得既然会Vue 还是分离开比较好，后端就只负责 返回数据  
+前端页面仓库 [见](https://github.com/Galileo01/community_vue)
 
 
 ## 特点
@@ -48,5 +49,3 @@ function verifyMiddleware(req, res, next) {
 - 帖子发布使用 markdown 在线预览
 使用 marked.js 在线编辑md文件，直接预览，  
 是md 格式的字符串 存储到数据库 ，返回到帖子详情页，渲染
-=======
->>>>>>> 216dc55f635c9f32e3113ae4704eedd49018d6e3
